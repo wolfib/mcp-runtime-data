@@ -17,15 +17,20 @@ interface ToolDefinition {
 }
 
 interface ToolGroup {
-  name: string;          // Namespace (e.g., "ImageEditor", "PageNavigator")
+  name: string;
   description: string;
   tools: ToolDefinition[];
 }
 
 class DevtoolsToolDiscoveryEvent extends CustomEvent<null> {
-  respondWith(response: ToolGroup | PromiseLike<ToolGroup>): void {}
+  respondWith(_response: ToolGroup | PromiseLike<ToolGroup>): void {}
 }
 
+declare global {
+    interface WindowEventMap {
+        'devtoolstooldiscovery': DevtoolsToolDiscoveryEvent;
+    }
+}
 
 window.addEventListener('devtoolstooldiscovery', (event: DevtoolsToolDiscoveryEvent) => {
   console.log("devtoolstooldiscovery event received");
