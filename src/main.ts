@@ -74,6 +74,28 @@ window.addEventListener('devtoolstooldiscovery', (event: DevtoolsToolDiscoveryEv
         execute: async (input: {text: string}) => {
           return input.text + input.text;
         }
+      },
+      {
+        name: "elementInfo",
+        description: "Returns info about a DOM element",
+        inputSchema: {
+          type: "object",
+          properties: {
+            element: {
+              // JSON schema describes an object with a `uid`, which the MCP server
+              // replaces with the actual DOM element, which then serves as input to the tool.
+              type: "object",
+              properties: {
+                uid: { type: "string" },
+              },
+              required: ["uid"]
+            }
+          },
+          required: ["element"]
+        },
+        execute: async (input: {element: HTMLElement}) => {
+          return input.element.outerHTML;
+        }
       }]
   });
 });
