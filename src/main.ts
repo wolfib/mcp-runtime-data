@@ -32,6 +32,24 @@ declare global {
     }
 }
 
+class ToDoList {
+  todos: {id: number, title: string, completed: boolean}[] = [
+    {id: 1, title: "Buy milk", completed: false},
+    {id: 2, title: "Buy eggs", completed: false},
+    {id: 3, title: "Buy bread", completed: false}
+  ];
+
+  log() {
+    console.log('ToDo list:', this.todos);
+  }
+
+  add(title: string) {
+    this.todos.push({id: this.todos.length + 1, title, completed: false});
+  }
+}
+
+const todoList = new ToDoList();
+
 window.addEventListener('devtoolstooldiscovery', (event: DevtoolsToolDiscoveryEvent) => {
   console.log("devtoolstooldiscovery event received");
   event.respondWith({
@@ -95,6 +113,14 @@ window.addEventListener('devtoolstooldiscovery', (event: DevtoolsToolDiscoveryEv
         },
         execute: async (input: {element: HTMLElement}) => {
           return input.element.outerHTML;
+        }
+      },
+      {
+        name: "getToDoList",
+        description: "Returns a ToDo list.",
+        inputSchema: {},
+        execute: async () => {
+          return todoList;
         }
       }]
   });
